@@ -9,6 +9,9 @@
 
 #include <stdbool.h> /* para tener bool */
 #include "bstring/bstrlib.h" /* las *_to_string se dan en bstring */
+#include <glib.h> /* para tener las listas */
+// #include "glib-2.60.6/glib/gslist.h"
+
 
 
 /* scommand: comando simple.
@@ -30,8 +33,21 @@
  * La interfaz es esencialmente la de una cola. A eso se le
  * agrega dos accesores/modificadores para redirección de entrada y salida.
  */
-
+ 
 typedef struct scommand_s * scommand;
+
+struct scommand_s {
+    GSList *list;
+    bstring in;
+    bstring out;
+};
+
+
+struct pipeline_s {
+    GSList *list;
+    bool wait;
+};
+
 
 scommand scommand_new(void);
 /*

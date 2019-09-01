@@ -1,0 +1,52 @@
+Running suite scommand
+test_scommand.c:21:P:Precondition:test_destroy_null:0: Passed
+test_scommand.c:28:P:Precondition:test_push_back_null:0: Passed
+test_scommand.c:34:P:Precondition:test_push_back_argument_null:0: Passed
+test_scommand.c:42:P:Precondition:test_pop_front_null:0: Passed
+test_scommand.c:48:F:Precondition:test_pop_front_empty:0: Early exit with return value 0
+test_scommand.c:56:P:Precondition:test_set_redir_in_null:0: Passed
+test_scommand.c:62:P:Precondition:test_set_redir_out_null:0: Passed
+test_scommand.c:68:P:Precondition:test_is_empty_null:0: Passed
+test_scommand.c:74:P:Precondition:test_length_null:0: Passed
+test_scommand.c:80:P:Precondition:test_front_null:0: Passed
+test_scommand.c:86:F:Precondition:test_front_empty:0: Early exit with return value 0
+test_scommand.c:94:P:Precondition:test_get_redir_in_null:0: Passed
+test_scommand.c:100:P:Precondition:test_get_redir_out_null:0: Passed
+test_scommand.c:106:F:Precondition:test_to_string_null:0: Early exit with return value 0
+test_scommand.c:114:P:Creation:test_new_destroy:0: Passed
+test_scommand.c:126:F:Creation:test_new_is_empty:0: Assertion 'scommand_is_empty (scmd)' failed
+test_scommand.c:150:F:Functionality:test_adding_emptying:0: Assertion '(i==0) == scommand_is_empty (scmd)' failed
+test_scommand.c:166:F:Functionality:test_adding_emptying_length:0: Assertion 'i == scommand_length (scmd)' failed
+test_scommand.c:193:F:Functionality:test_fifo:0: Assertion 'biseq (scommand_front (scmd),strings[i]) == 1' failed
+test_scommand.c:207:F:Functionality:test_front_idempotent:0: Assertion 'biseqcstr (scommand_front (scmd), "123") == 1' failed
+test_scommand.c:216:F:Functionality:test_front_is_back:0: Assertion 'biseqcstr (scommand_front (scmd), "123") == 1' failed
+test_scommand.c:225:P:Functionality:test_front_is_not_back:0: Passed
+test_scommand.c:235:F:Functionality:test_redir:0: Assertion 'biseq (scommand_get_redir_in (scmd), scommand_get_redir_out (scmd)) != 1' failed
+test_scommand.c:252:F:Functionality:test_independent_redirs:0: Assertion 'biseqcstr (scommand_get_redir_in (scmd), "123") == 1' failed
+test_scommand.c:278:P:Functionality:test_to_string_empty:0: Passed
+test_scommand.c:314:F:Functionality:test_to_string:0: Assertion 'binstr(str,0,strings[i])>=last_pos' failed
+Running suite pipeline
+test_pipeline.c:16:P:Precondition:test_destroy_null:0: Passed
+test_pipeline.c:23:P:Precondition:test_push_back_null:0: Passed
+test_pipeline.c:31:P:Precondition:test_push_back_scmd_null:0: Passed
+test_pipeline.c:39:P:Precondition:test_pop_front_null:0: Passed
+test_pipeline.c:45:F:Precondition:test_pop_front_empty:0: Early exit with return value 0
+test_pipeline.c:53:P:Precondition:test_set_wait_null:0: Passed
+test_pipeline.c:59:P:Precondition:test_is_empty_null:0: Passed
+test_pipeline.c:65:P:Precondition:test_length_null:0: Passed
+test_pipeline.c:71:P:Precondition:test_front_null:0: Passed
+test_pipeline.c:77:F:Precondition:test_front_empty:0: Early exit with return value 0
+test_pipeline.c:85:P:Precondition:test_get_wait_null:0: Passed
+test_pipeline.c:91:F:Precondition:test_to_string_null:0: Early exit with return value 0
+test_pipeline.c:99:P:Creation:test_new_destroy:0: Passed
+test_pipeline.c:124:F:Functionality:test_adding_emptying:0: Assertion 'pipeline_is_empty (pipe)' failed
+test_pipeline.c:143:F:Functionality:test_adding_emptying_length:0: Assertion 'i == pipeline_length (pipe)' failed
+test_pipeline.c:169:F:Functionality:test_fifo:0: Assertion 'pipeline_front (pipe) == scmds[i]' failed
+test_pipeline.c:182:F:Functionality:test_front_idempotent:0: Assertion 'pipeline_front (pipe) == scmd' failed
+test_pipeline.c:192:F:Functionality:test_front_is_back:0: Assertion 'pipeline_front (pipe)==scmd' failed
+test_pipeline.c:203:P:Functionality:test_front_is_not_back:0: Passed
+test_pipeline.c:212:P:Functionality:test_wait:0: Passed
+test_pipeline.c:221:P:Functionality:test_to_string_empty:0: Passed
+test_pipeline.c:250:F:Functionality:test_to_string:0: Assertion 'n==MAX_LENGTH-1' failed
+Results for all suites run:
+56%: Checks: 48, Failures: 21, Errors: 0

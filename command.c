@@ -23,7 +23,7 @@ scommand scommand_destroy(scommand self){
 
 void scommand_push_back(scommand self, bstring argument){
        assert(self!=NULL && argument!=NULL);
-     self->list = g_slist_append(self->list, argument);     
+       self->list = g_slist_append(self->list, argument);     
 }
 
 
@@ -85,17 +85,20 @@ const_bstring scommand_get_redir_out(const scommand self){
 
 
 bstring scommand_to_string(const scommand self){
-       GSList *aux ;
-       assert(self!=NULL);
-       aux = self->list->next; 
-       while (aux!=NULL)       {
-              int i = bconcat(self->list->data,aux->data);       
-              aux = aux->next;
-              if (i==-1){
-                  EXIT_FAILURE;
-              };
-       }
-       return self->list->data;
+       
+       int j ;
+       bstring ret ;
+       if (self == NULL){
+              return NULL;
+       }      
+       j = 0;
+       ret = self->list->data;
+       for (unsigned int i = 1; i < g_slist_length (self->list); i++){
+            j = bconcat(ret,(const_bstring) g_slist_nth (self->list, i));  
+            assert(j == BSTR_ERR);
+       };      
+       scommand_destroy(self);
+       return ret;      
 }
 
 
@@ -109,6 +112,7 @@ pipeline pipeline_new(void){
 }
 
 pipeline pipeline_destroy(pipeline self){
+ 
        assert(self!=NULL);
        g_slist_free(self->list);
        return self;
@@ -116,18 +120,21 @@ pipeline pipeline_destroy(pipeline self){
 
 
 void pipeline_push_back(pipeline self, scommand sc){
-       assert(self!=NULL && sc!=NULL);
+      
+      assert(self!=NULL && sc!=NULL);
       self->list = g_slist_append(self->list, sc);
 }
 
 
 void pipeline_pop_front(pipeline self){ 
-       assert(self!=NULL && !pipeline_is_empty(self));
+      
+      assert(self!=NULL && !pipeline_is_empty(self));
       self->list = g_slist_remove(self->list,self->list->data);
 }
 
 
 void pipeline_set_wait(pipeline self, const bool w){
+      
        assert(self!=NULL);
        self->wait = w;      
 }
@@ -135,6 +142,7 @@ void pipeline_set_wait(pipeline self, const bool w){
 
 
 bool pipeline_is_empty(const pipeline self){
+      
        assert(self!=NULL);
        bool aux = (g_slist_length(self->list) == 0) ;
        return aux;
@@ -142,6 +150,7 @@ bool pipeline_is_empty(const pipeline self){
 
 
 unsigned int pipeline_length(const pipeline self){
+      
        unsigned int length;
        assert(self!=NULL);
        length = g_slist_length(self->list);
@@ -150,25 +159,36 @@ unsigned int pipeline_length(const pipeline self){
 
 
 scommand pipeline_front(const pipeline self){
+      
         scommand first;
-       assert(self!=NULL && !pipeline_is_empty(self));
+        assert(self!=NULL && !pipeline_is_empty(self));
         first = (scommand)g_slist_nth(self->list,1);
         return first;
 }
 
 
 bool pipeline_get_wait(const pipeline self){
-       assert(self!=NULL);
+       
+        assert(self!=NULL);
         bool wait = (self->wait == true);
         return wait;
 }
 
 
 bstring pipeline_to_string(const pipeline self){
-       bstring new;
-       assert(self!=NULL);
-       new = NULL;
-       return new; //borra  
+
+        int j;
+        bstring ret;
+        if (self == NULL){
+            return NULL;
+        }
+        ret = scommand_to_string(self->list->data);
+        for (unsigned int i = 1; i < g_slist_length (self->list); i++) {
+              j = bconcat(ret, (const_bstring) scommand_to_string((scommand)g_slist_nth (self->list, i)));
+              assert(j == BSTR_ERR);
+        }
+        pipeline_destroy(self);
+        return ret;
 }                     
 
 

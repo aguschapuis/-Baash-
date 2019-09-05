@@ -1,5 +1,6 @@
 #include "builtin.h"
 #include <unistd.h>
+#include <stdio.h>
 
 
 /*Esta primer funcion determina cual de los 3 valores de cmd_id le corresponde al pipe*/
@@ -9,8 +10,16 @@ cmd_id builtin_index (const pipeline pipe){
     if (bstricmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"))){
         index = BUILTIN_CHDIR;
     }
+    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"),2)){
+        printf("Incorrect comand \n Try with 'cd' ");
+        _exit(1);
+    }
     else if (bstricmp(scommand_front(pipeline_front(pipe)), bfromcstr("exit"))){
         index = BUILTIN_EXIT;
+    }
+    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("exit"),4)){
+        printf("Incorrect comand \n Try with 'exit' ");
+        _exit(1);
     }
     else {
         index = BUILTIN_UNKNOWN;

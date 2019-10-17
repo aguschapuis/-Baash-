@@ -17,4 +17,6 @@ void execute_pipeline(pipeline apipe);
  * Requires: apipe!=NULL
  */
 
+void extern_run (pipeline pipeline);
+
 #endif /* EXECUTE_H */

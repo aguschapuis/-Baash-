@@ -9,20 +9,23 @@ cmd_id builtin_index (const pipeline pipe){
     cmd_id index;
     if (bstricmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"))){
         index = BUILTIN_CHDIR;
+    printf("El index es chdir\n");    
     }
-    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"),2)){
-        printf("Incorrect comand \n Try with 'cd' ");
-        _exit(1);
-    }
+    // else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"),2)){
+        // printf("Incorrect comand \n Try with 'cd' ");
+        // _exit(1);
+    // }
     else if (bstricmp(scommand_front(pipeline_front(pipe)), bfromcstr("exit"))){
         index = BUILTIN_EXIT;
+        printf("El index es exit\n");
     }
-    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("exit"),4)){
-        printf("Incorrect comand \n Try with 'exit' ");
-        _exit(1);
-    }
+    // else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("exit"),4)){
+        // printf("Incorrect comand \n Try with 'exit' ");
+        // _exit(1);
+    // }
     else {
         index = BUILTIN_UNKNOWN;
+        printf("El index es desconocidp\n");
     }
     return index;
 

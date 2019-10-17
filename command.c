@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "assert.h"
-
+#include <stdio.h>
 
 scommand scommand_new(void){
       scommand new = calloc(sizeof(scommand),1);
@@ -29,7 +29,9 @@ void scommand_push_back(scommand self, bstring argument){
 
 void scommand_pop_front(scommand self){
        assert(self!=NULL && !scommand_is_empty(self));
+       printf("Entro al scommand por front ! \n");
       self->list = g_slist_remove(self->list,self->list->data); //elimina el elemento que contenga el dato self->list->data (primero)
+       printf("Salio del scommand pop front ! \n");
 }
 
 
@@ -63,8 +65,10 @@ unsigned int scommand_length(const scommand self){
 
 const_bstring scommand_front(const scommand self){
        const_bstring aux ;
+       printf("Entro al scommand front ! \n");
        assert(self!=NULL && !scommand_is_empty(self));
        aux = (const_bstring)g_slist_nth (self->list,1);
+       printf("Salio del scommand front ! \n");
        return aux;
 }
 

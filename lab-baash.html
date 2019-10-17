@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Laboratorio 1: Un Baash</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="laboratorio-1-un-baash">
+<h1 class="title">Laboratorio 1: Un Baash</h1>
+
+<div class="line-block">
+<div class="line">Cátedra de Sistemas Operativos</div>
+<div class="line">Revisión 2018, Milagro Teruel, Marco Rocchietti, Ignacio Moretti</div>
+<div class="line">Revisión 2011, 2012, 2013, Carlos S. Bederián</div>
+<div class="line">Revisión 2009, 2010, Daniel F. Moisset</div>
+<div class="line">Original 2008, Nicolás Wolovick</div>
+</div>
+<div class="section" id="objetivos">
+<h1>Objetivos</h1>
+<ul class="simple">
+<li>Utilizar los mecanismos de <strong>concurrencia</strong> y <strong>comunicación</strong> de
+<em>gruesa granularidad</em> que brinda UNIX.</li>
+<li>Comprender un intérprete de línea de comando reflejan la arquitectura
+y estructura interna de estas primitivas de comunicación y
+concurrencia.</li>
+<li>Implementar de manera <em>sencilla</em> un intérprete de línea de comandos
+(shell).</li>
+<li>Utilizar <strong>buenas prácticas de programación</strong>: estilo de código,
+tipos abstractos de datos (TAD), prueba unitaria (unit testing),
+prueba de caja cerrada (black box testing), programación defensiva;
+asi como herramientas de debugging de programas y memoria.</li>
+</ul>
+</div>
+<div class="section" id="objetivos-de-implementacion">
+<h1>Objetivos de implementación</h1>
+<p>Codificar un <strong>B</strong>ourne <strong>A</strong>gain <strong>A</strong>gain <strong>SH</strong>ell
+(<tt class="docutils literal">baash</tt>) que tenga las siguientes funcionalidades generales:</p>
+<ul class="simple">
+<li>Ejecución de comandos en espera y concurrente pasando todos los
+parámetros correspondientes.</li>
+<li>Redirección de entrada y salida.</li>
+<li>Pipe entre comandos.</li>
+</ul>
+<p>Debería poder ejecutar correctamente los siguientes ejemplos:</p>
+<pre class="literal-block">
+ls -l baash.c
+ls 1 2 3 4 5 6 7 8 9 10 11 12 ... 194
+wc -l &gt; out &lt; in
+/usr/bin/xeyes &amp;
+ls | wc -l
+</pre>
+<p>En particular deberán:</p>
+<ul class="simple">
+<li>Implementar los comandos internos <tt class="docutils literal">exit</tt> y <tt class="docutils literal">cd</tt>.</li>
+
+<li>Poder salir con CTRL-D, el caracter de fin de transmisión
+(<a class="reference external" href="http://en.wikipedia.org/wiki/End-of-transmission_character">EOT</a>).</li>
+<li>Aceptar entrada redirigida, es decir
+<tt class="docutils literal">echo <span class="pre">-en</span> &quot;ls\nexit\n&quot; | ./baash</tt> tiene que listar el directorio
+actual y salir.</li>
+<li>Ser robusto ante entradas incompletas y/o inválidas.</li>
+</ul>
+<p>Para la implementación se pide en general:</p>
+<ul class="simple">
+<li>Utilizar TAD opacos.</li>
+<li>No perder memoria, salvo casos debidamente reportados en el informe
+(de bibliotecas externas, por supuesto).</li>
+<li>Seguir los estándares de calidad de código de la materia (ver código
+fuente de <tt class="docutils literal">ksamp</tt>).</li>
+</ul>
+</div>
+<div class="section" id="modularizacion">
+<h1>Modularización</h1>
+<p>Se propone una división en 3 módulos. Uno estructural, y dos
+funcionales:</p>
+<ul class="simple">
+<li>Pipeline (estructural)</li>
+<li>Parser (funcional)</li>
+<li>Ejecutor (funcional)</li>
+</ul>
+<p>El primero define un TAD <tt class="docutils literal">pipeline</tt> a través del cual se pasan datos a
+los otros módulos. El módulo principal <tt class="docutils literal">baash</tt> utiliza estos tres
+módulos. Además un modulo auxiliar <tt class="docutils literal">builtins</tt> auxilia en la ejecución
+de comandos internos.</p>
+<p><img alt="Modularización" src="modulos-baash.png" /></p>
+<div class="line-block">
+<div class="line">El <tt class="docutils literal">baash</tt>, invoca alternadamente en un ciclo al parser y al
+ejecutor.</div>
+<div class="line">El <tt class="docutils literal">parser</tt> toma un string del standard input y devuelve una
+instancia de <tt class="docutils literal">pipeline</tt> con toda la información interpretada de la
+secuencia de caracteres.</div>
+<div class="line">Finalmente el módulo <tt class="docutils literal">execute</tt> toma la instancia de <tt class="docutils literal">pipeline</tt> y
+procede a realizar los <tt class="docutils literal">{fork, execvp, wait, dup, pipe}</tt> necesarios. O
+bien, en caso de comandos internos, invoca a <tt class="docutils literal">builtin</tt>.</div>
+</div>
+<p>Notar que esta modularización funcional depende fuertemente del TAD
+<tt class="docutils literal">pipeline</tt>, por lo tanto este módulo debe ser implementado rápida y
+correctamente.</p>
+<div class="section" id="tads-pipeline-y-scommand">
+<h2>TADs <tt class="docutils literal">pipeline</tt> y <tt class="docutils literal">scommand</tt></h2>
+<p>A partir de la lectura de <tt class="docutils literal">man bash</tt> en su sección <tt class="docutils literal">SHELL GRAMMAR</tt>,
+se extrae la gramática que maneja el shell. Esta se divide en 3 capas:
+comando simple, tubería y lista, en orden creciente de complejidad.
+Limitaremos la implementación a los 2 primeros niveles.</p>
+<ul class="simple">
+<li>Un <strong>comando simple</strong> (<tt class="docutils literal">scommand</tt>) es una secuencia de palabras
+donde la primera es el comando y las siguientes sus argumentos.
+Resultan opcionales dos redirectores, uno de entrada y otro de
+salida. Ejemplos: &quot;<tt class="docutils literal">ls <span class="pre">-l</span> Makefile</tt>&quot; o
+&quot;<tt class="docutils literal">wc archivo.c &gt; estadisticas.txt</tt>&quot;</li>
+<li>Una <strong>tubería</strong> (<tt class="docutils literal">pipeline</tt>) es una secuencia de comandos simples
+conectados por <em>pipe</em> con un terminador que indica si el shell debe
+esperar la terminación del comando.</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="52%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>TAD</strong></td>
+<td><strong>Ejemplo de comando</strong></td>
+<td><strong>Tipo (estilo Haskell)</strong></td>
+</tr>
+<tr><td><tt class="docutils literal">scommand</tt></td>
+<td><tt class="docutils literal">ls <span class="pre">-l</span> ej1.c &gt; out &lt; in</tt></td>
+<td><tt class="docutils literal"><span class="pre">([bstring],bstring,bstring)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal">pipeline</tt></td>
+<td><tt class="docutils literal">ls <span class="pre">-l</span> *.c &gt; out &lt; in&nbsp; |&nbsp; wc&nbsp; |&nbsp; grep <span class="pre">-i</span> glibc &amp;</tt></td>
+<td><tt class="docutils literal"><span class="pre">([scommand],bool)</span></tt></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="ejemplos">
+<h3>Ejemplos</h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="31%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>Entrada</strong></td>
+<td><strong>Estructura</strong></td>
+<td><strong>Comentario</strong></td>
+</tr>
+<tr><td><tt class="docutils literal">cd <span class="pre">../..</span></tt></td>
+<td><tt class="docutils literal">( <span class="pre">[([&quot;cd&quot;,</span> <span class="pre">&quot;../..&quot;],</span> &quot;&quot;, <span class="pre">&quot;&quot;)],</span> true )</tt></td>
+<td>El shell padre espera la terminación del hijo. Un elemento de pipeline.
+Este único elemento tiene 2 cadenas y sin redirectores de entrada y salida.</td>
+</tr>
+<tr><td><tt class="docutils literal">xeyes &amp;</tt></td>
+<td><tt class="docutils literal">( <span class="pre">[([&quot;xeyes&quot;],&quot;&quot;,&quot;&quot;)],</span> false )</tt></td>
+<td>Un elemento en el pipeline con ejecución en 2do plano.
+Ese elemento no tiene redirectores ni argumentos.</td>
+</tr>
+<tr><td><tt class="docutils literal">ls | wc <span class="pre">-l</span></tt></td>
+<td><tt class="docutils literal">( <span class="pre">[([&quot;ls&quot;],&quot;&quot;,&quot;&quot;),([&quot;wc&quot;,</span> <span class="pre">&quot;-l&quot;],&quot;&quot;,&quot;&quot;)],</span> true )</tt></td>
+<td>Sin ejecución en 2do plano, dos comandos simples conectados por un pipeline.</td>
+</tr>
+<tr><td><tt class="docutils literal">ls <span class="pre">-l</span> ej1.c &gt; out &lt; in</tt></td>
+<td><tt class="docutils literal">( <span class="pre">[([&quot;ls&quot;,&quot;-l&quot;,&quot;ej1.c&quot;],&quot;out&quot;,&quot;in&quot;)],</span> true )</tt></td>
+<td>Vemos como el único comando simple del pipeline tiene redirectores.</td>
+</tr>
+<tr><td><tt class="docutils literal">ls <span class="pre">-l</span> *.c &gt; out &lt; in | wc | grep <span class="pre">-i</span> glibc &amp;</tt></td>
+<td><tt class="docutils literal">( [scomm0,scomm1,scomm2], false )</tt> where
+<tt class="docutils literal"><span class="pre">scomm0=([&quot;ls&quot;,</span> <span class="pre">&quot;-l&quot;,</span> <span class="pre">&quot;ej1.c&quot;],&quot;out&quot;,&quot;in&quot;)</span></tt>
+<tt class="docutils literal"><span class="pre">scomm1=([&quot;wc&quot;],&quot;&quot;,&quot;&quot;)</span></tt>
+<tt class="docutils literal"><span class="pre">scomm2=([&quot;grep&quot;,&quot;-i&quot;,&quot;glibc&quot;],&quot;&quot;,&quot;&quot;)</span></tt></td>
+<td>La estructura usada al máximo.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="implementacion">
+<h3>Implementación</h3>
+<p>Ambas estructuras de datos contienen dentro una lista o secuencia de
+objetos. En el primero es una secuencia de <tt class="docutils literal">bstring</tt> y en el segundo
+de <tt class="docutils literal">scommand</tt>. Cualquier TAD que permita realizar estas operaciones
+alcanzaría para nuestros propósitos:</p>
+<ul class="simple">
+<li>Meter un elemento por por detrás.</li>
+<li>Sacar un elemento de adelante.</li>
+<li>Consultar que elemento está adelante.</li>
+<li>Consultar la longitud de la lista.</li>
+</ul>
+<div class="line-block">
+<div class="line">Dado que resulta una <em>mala práctica de la programación reinventar la
+rueda</em>, sugerimos el uso de alguna biblioteca de manejo de secuencias de
+objetos generales.</div>
+<div class="line">Un ejemplo de éstas bibliotecas es
+<a class="reference external" href="http://library.gnome.org/devel/glib/stable/">GLib</a>, sobre la cual se
+monta todo el stack de código de <a class="reference external" href="http://www.gnome.org/">GNOME</a>.
+Dentro de GLib tenemos varias implementaciones de listas que pueden ser
+útiles:
+<a class="reference external" href="http://library.gnome.org/devel/glib/stable/glib-Singly-Linked-Lists.html">GSList</a>,
+<a class="reference external" href="http://library.gnome.org/devel/glib/stable/glib-Doubly-Linked-Lists.html">GList</a>,
+<a class="reference external" href="http://library.gnome.org/devel/glib/stable/glib-Double-ended-Queues.html">GQueue</a>
+y <a class="reference external" href="http://library.gnome.org/devel/glib/stable/glib-Sequences.html">GSequence</a></div>
+<div class="line">La diferencia radica en el tipo de operaciones que soportan, y la
+eficiencia en tiempo y en espacio.</div>
+</div>
+<p>Utilizando alguna implementación probada de secuencia, el resto es más o
+menos directo ya que el comando simple y el pipeline son tuplas que
+además de las listas contienen booleanos y cadenas de caracteres.</p>
+<p>Resultan importantes las dos funciones <tt class="docutils literal">*_to_string</tt> porque nos
+permitirán debuggear el resto de la implementación. Cuando tengamos
+dudas de lo que recibe o devuelve un módulo funcional, recurrimos a
+estas funciones para imprimir a la manera del shell los TAD.</p>
+<p>Se da una test-suite implementada con <tt class="docutils literal">check</tt> a fin de comprobar que
+la implementación dada tiene alguna parte de la funcionalidad esperada.
+Basta con hacer <tt class="docutils literal">make <span class="pre">test-command</span></tt> para compilar e invocar el unit
+testing de <tt class="docutils literal">scommand</tt> y <tt class="docutils literal">pipeline</tt>.</p>
+</div>
+</div>
+<div class="section" id="parser">
+<h2>Parser</h2>
+<div class="line-block">
+<div class="line">El primer módulo funcional consiste en ir recorriendo el <tt class="docutils literal">stdin</tt> de
+manera lineal e ir tomando los comandos, sus argumentos, los
+redirectores, los pipes y el operador de segundo plano e ir armando una
+instancia del tipo <tt class="docutils literal">pipeline</tt> con la interpretación de los datos de
+entrada.</div>
+<div class="line">Esta tarea se denomina
+<a class="reference external" href="http://en.wikipedia.org/wiki/Parsing">parsing</a> o análisis sintáctico
+y consiste en traducir la columna 1 a la columna 2 del ejemplo dado.</div>
+<div class="line">Este módulo tiene que ser especialmente <strong>flexible</strong> y <strong>robusto</strong> con
+respecto a sus entradas. Flexible en el sentido que no debe importar si
+agregamos espacios/tabs de más en cantidad arbitraria, o si usamos signos
+de puntuación en nmbres de comando y argumentos. Robusto se refiere a que
+todo lo que no sea un comando válido respecto al TAD <tt class="docutils literal">pipeline</tt> debe ser
+ignorado/informado. Por ejemplo si inyectamos ruido en la línea de comandos
+<tt class="docutils literal">ñsaj {}dfhwiuoyrtrjb23 b2 998374 2h231 #$L!</tt>, o si olvidamos alguna
+parte <tt class="docutils literal">ls <span class="pre">-l</span> *.c &gt;</tt>, la función principal del módulo debería indicar un
+error y devolver un pipeline nulo.</div>
+<div class="line">La funcionalidad del parser es en algún sentido la inversa de
+<tt class="docutils literal">*_to_string</tt> y que en general se debería cumplir que <tt class="docutils literal">parse_pipeline
+(pipeline_to_string (pipe)) = pipe</tt>, más allá de los espacios.</div>
+</div>
+<p>El parser a utilizar, cuya interfaz está dada en el encabezado <tt class="docutils literal">parser.h</tt>,
+será entregado por la cátedra y consiste de los módulos <tt class="docutils literal">parser.o</tt> y
+<tt class="docutils literal">lexer.o</tt> y ha sido construído sobre el lexer utilizado en el laboratorio
+anterior.</p>
+<p>Notar que el TAD <tt class="docutils literal">Parser</tt> toma un <tt class="docutils literal">FILE *</tt> como entrada y como en
+*NIX, todo es un archivo, la entrada estándar también tiene un
+<tt class="docutils literal">FILE *</tt> asociado.</p>
+</div>
+<div class="section" id="execute">
+<h2>Execute</h2>
+<div class="line-block">
+<div class="line">El módulo final es el encargado de invocar a las syscalls
+<tt class="docutils literal"><span class="pre">fork();</span> execvp()</tt> necesaria para ejecutar los comandos en un ambiente
+aislado del intérprete de línea de comandos. Además tiene que redirigir
+la entrada y la salida antes de realizar el reemplazo de la imagen en
+memoria <tt class="docutils literal">execvp()</tt>.</div>
+<div class="line">En este módulo también se arma la tubería para conectar los dos o más
+comandos dentro de un pipeline.</div>
+</div>
+<p>La primera tarea del módulo de ejecución es reconocer entre comandos
+internos y externos, y decidir si invocar a una función interna o a la
+ejecución de procesos externa.</p>
+<p>Podemos dar ejemplos de la relación entre las entradas del <tt class="docutils literal">baash</tt> y
+los syscalls:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="36%" />
+<col width="47%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>Entrada</strong></td>
+<td><strong>SysCalls relacionadas</strong></td>
+<td><strong>Comentario</strong></td>
+</tr>
+<tr><td><tt class="docutils literal">cd <span class="pre">../..</span></tt></td>
+<td><tt class="docutils literal">void</tt></td>
+<td>El comando es interno, solo hay que llamar a la syscall de cambio de directorio.</td>
+</tr>
+<tr><td><tt class="docutils literal">gzip Lab1G04.tar</tt></td>
+<td><tt class="docutils literal"><span class="pre">fork();</span> <span class="pre">execvp();</span> wait()</tt></td>
+<td>Ejecutar el comando y el padre espera.</td>
+</tr>
+<tr><td><tt class="docutils literal">xeyes &amp;</tt></td>
+<td><tt class="docutils literal"><span class="pre">fork();</span> execvp()</tt></td>
+<td>Un comando simple sin redirectores y sin espera.</td>
+</tr>
+<tr><td><tt class="docutils literal">ls <span class="pre">-l</span> ej1.c &gt; out &lt; in</tt></td>
+<td><tt class="docutils literal"><span class="pre">fork();</span> <span class="pre">open();</span> <span class="pre">close();</span> <span class="pre">dup();</span> <span class="pre">execvp();</span> wait()</tt></td>
+<td>Redirige tanto la entrada como la salida y el shell padre espera.</td>
+</tr>
+<tr><td><tt class="docutils literal">ls | wc <span class="pre">-l</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">pipe();</span> <span class="pre">fork();</span> <span class="pre">open();</span> <span class="pre">close();</span> <span class="pre">dup();</span> <span class="pre">execvp();</span> wait()</tt></td>
+<td>Sin ejecución en 2do plano, dos comandos simples conectados por un pipeline.</td>
+</tr>
+</tbody>
+</table>
+<p>En el caso de los pipes pedimos respetar la siguiente estructura
+filiatoria:</p>
+<p><img alt="Relación padre hijo en el pipe" src="pipe2.png" /></p>
+<div class="section" id="id1">
+<h3>Implementación</h3>
+<p>Como aquí se concentran la mayoría de las llamadas a sistema (syscalls),
+se deberá tener especial cuidado en los códigos de error que ellas
+devuelven e intentar manejar esta información de la mejor manera
+posible. Todas las syscalls (y también llamados a bibliotecas) pueden
+fallar, algunos con mayor probabilidad que otros (es de esperar que un
+<tt class="docutils literal">fork()</tt> sea exitoso, pero no hay tanta seguridad para un <tt class="docutils literal">open()</tt>).</p>
+<div class="line-block">
+<div class="line">Otro punto importante es la correcta interacción entre
+<tt class="docutils literal">fork, pipe, close</tt>, a fin de <strong>cerrar todas las puntas
+innecesarias</strong>. Si esto es asi, solo el proceso hijo estará apuntando a
+la entrada del pipeline <tt class="docutils literal">pipe[1]</tt> y cuando el comando termine se
+produce automáticamente el cierre de todos los file descriptors. Cuando
+el sistema operativo recibe el último <tt class="docutils literal">close(pipe[1])</tt>, induce la
+lectura de un <tt class="docutils literal">EOF</tt> desde el proceso que está colgado a <tt class="docutils literal">pipe[0]</tt> y
+éste puede terminar.</div>
+<div class="line">El síntoma más común de un <tt class="docutils literal">close</tt> olvidado es un pipeline que
+queda bloqueado para siempre, esperando un <tt class="docutils literal">EOF</tt> que jamás llegará.</div>
+</div>
+<p>Otros detalles a tener en cuenta:</p>
+<ul class="simple">
+<li>La adaptación del <tt class="docutils literal">scommand</tt> a la estructura <tt class="docutils literal">char **argv</tt> que
+necesita <tt class="docutils literal">execvp</tt>.</li>
+<li>Los permisos con los cuales se abren los archivos de redirección,
+especialmente el de salida.</li>
+</ul>
+<p>Finalmente en este módulo hay muchos detalles no especificados que
+deberán ser resueltos en la medida de lo posible, recurriendo a la
+experimentación.</p>
+</div>
+</div>
+<div class="section" id="y-los-comandos-internos">
+<h2>¿Y los comandos internos?(módulo BUILTIN)</h2>
+<p>Hasta ahora no hablamos de los comandos internos en todo esta propuesta
+de modularización.</p>
+<p>El módulo <tt class="docutils literal">builtin</tt> debería tener un par de funcionalidades básicas
+sobre un <tt class="docutils literal">scommand</tt>. La primera sería detectar si es un comando
+interno, mientras que la segunda es efectuar dicho comando.</p>
+<p>Se piden solo dos comandos internos: <tt class="docutils literal">cd</tt> y <tt class="docutils literal">exit</tt>. El primero se
+implementa de manera directa con la syscall <tt class="docutils literal">chdir()</tt>, mientras que el
+segundo es conceptualmente más sencillo pero requiere un poco de
+planificación para que el shell termine de manera limpia.</p>
+<p>Aunque se piden pocos comandos, una buena implementación del módulo
+<tt class="docutils literal">builtin</tt> debería poder soportar una cantidad arbitraria de comandos
+internos sin modificaciones mayores.</p>
+
+
+</div>
+<div class="section" id="kickstart">
+<h2>Kickstart</h2>
+<p>Para implementar todo lo de arriba les entregamos:</p>
+<ul class="simple">
+<li>Headers con una interfaz mínima a implementar. (<tt class="docutils literal">command.h</tt>, <tt class="docutils literal">builtin.h</tt> y
+<tt class="docutils literal">execute.h</tt>)</li>
+<li>Un parser. (<tt class="docutils literal">parser.h</tt>, <tt class="docutils literal">lexer.o</tt>, <tt class="docutils literal">parser.o</tt>)</li>
+<li>El código objeto de una implementación que funciona.</li>
+<li>Un conjunto de pruebas unitarias (unit testing) para los dos módulos
+a implementar, que se puede llamar desde el <tt class="docutils literal">Makefile</tt>:<ul>
+<li>Pruebas de <tt class="docutils literal">command.c</tt> (scommand y pipeline):
+<tt class="docutils literal">make <span class="pre">test-command</span></tt></li>
+<li>Pruebas de <tt class="docutils literal">execute.c</tt>: <tt class="docutils literal">make <span class="pre">test-execute</span></tt></li>
+<li>Pruebas para ambos módulos juntos: <tt class="docutils literal">make test</tt></li>
+<li>Pruebas de manejo de memoria en los módulos: <tt class="docutils literal">make memtest</tt></li>
+</ul>
+</li>
+</ul>
+<p>El código se puede bajar del sitio de la materia.</p>
+</div>
+</div>
+<div class="section" id="algunos-consejos">
+<h1>Algunos consejos</h1>
+<ul class="simple">
+<li>Antes que nada completar y probar la implementación del TAD que será
+la interfaz de comunicación entre los módulos propuestos.</li>
+<li><strong>Dividir</strong> el trabajo entre los integrantes del grupo.
+Esto servirá para trabajar en paralelo y focalizar a cada uno en una
+tarea particular. Luego si cada uno hizo bien su trabajo, se
+requerirá una etapa final de integración que no hay que subestimar en
+el tiempo que puede tomar.</li>
+<li>Hay muchísimas cosas de comportamiento no especificado, como por
+ejemplo que hacer con <tt class="docutils literal">ls &gt; out | wc &lt; in</tt>, o definir si el padre
+espera a todos los hijos de un pipe o solo al último. Aunque no es
+necesario definir todos estos detalles y hacer que nuestro shell se
+comporte de esta manera, podemos deducir el comportamiento del
+programa haciendo experimentos en la línea de comandos de nuestro
+*NIX favorito.</li>
+<li>Codificar rápidamente el lazo principal de
+<tt class="docutils literal">entrada; parse; execute</tt> con
+<a class="reference external" href="http://en.wikipedia.org/wiki/Method_stub">stubs</a> en todas las
+rutinas, para tener una base sobre la cual ir codificando y probando
+de manera interactiva.</li>
+<li>Tratar en lo posible de ir haciendo la integración de los módulos de
+manera incremental, a fin de no encontrar sorpresas en la etapa final
+de integración.</li>
+<li>Testear la implementación de manera exhaustiva, sobre todo en cuanto
+a su robustez. Pensar siempre que el usuario puede ser además de un
+enemigo, un gran conocedor de los bugs típicos que puede tener un
+shell.</li>
+<li>Recordar que el shell refleja tan bien las 5 syscalls que el módulo
+de ejecución deberá ser muy compacto. En caso contrario reorganicen
+sus ideas para lograr este objetivo.</li>
+</ul>
+</div>
+<div class="section" id="que-como-y-cuando-entregar">
+<h1>Qué, cómo, y cuándo entregar</h1>
+<p>El proyecto se entrega antes del Martes 03/09/2019 a las 18:00h y deberá:</p>
+<ol class="arabic simple">
+<li>Pasar el 100% del unit-testing (<tt class="docutils literal">make test</tt>) dado para
+todo el proyecto.</li>
+<li>Manejar pipelines de dos comandos.</li>
+<li>Manejar de manera adecuada la terminación de procesos lanzados
+en segundo plano con <tt class="docutils literal">&amp;</tt>, sin dejar procesos <em>zombies</em>. Pueden
+consultar la sección 3.4.3 de &quot;<a class="reference external" href="http://www.advancedlinuxprogramming.com">Advanced Linux Programming</a>&quot;,
+que está en la página 57, o bien en el artículo del Wikipedia acerca
+de <a class="reference external" href="http://en.wikipedia.org/wiki/Zombie_process">Zombie process</a> o
+el de <a class="reference external" href="http://en.wikipedia.org/wiki/SIGCHLD">SIGCHLD</a>.</li>
+</ul>
+</li>
+</ol>
+<p>La entrega se hara directamente ingresando una revisión en el sistema de
+control de revisiones (bitbucket) que les asigna la cátedra.</p>
+<div class="section" id="documentacion">
+<h2>Documentación</h2>
+<div class="line-block">
+<div class="line">La documentación que se entregue deberá reflejar dos cosas
+principales: el proceso de desarrollo y el resultado final.</div>
+<div class="line">La documentación entregada deberá estar en 
+formato: <a class="reference external" href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> (<tt class="docutils literal">.md</tt>),
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="tareas-adicionales">
+<h1>Tareas adicionales</h1>
+<p>Se pueden hacer las siguientes mejoras:</p>
+<ul class="simple">
+<li>Imprimir un <em>prompt</em> con información relevante, como por ejemplo
+nombre del host, nombre de usuario y camino relativo.</li>	
+<li>Prompt configurable desde la variable de entorno <tt class="docutils literal">PS1</tt>.</li>
+<li>Implementar todo usando la metodología <a class="reference external" href="http://en.wikipedia.org/wiki/Test-driven_development">Test Driven
+Developent</a>
+(TDD).</li>
+<li>Implementar un parser propio.</li>
+<li>Implementar toda la generalidad para aceptar la gramática de <tt class="docutils literal">list</tt>
+según la sección <tt class="docutils literal">SHELL GRAMMAR</tt> de <tt class="docutils literal">man bash</tt>. Por ejemplo se
+podrá ejecutar <tt class="docutils literal">ls <span class="pre">-l</span> | wc ; ls &amp; ps</tt>. Para hacer esto habrá que
+pensar mejor las estructuras porque <tt class="docutils literal">pipeline</tt> incorpora el
+indicador de 2do plano que debería estar en <tt class="docutils literal">list</tt>.</li>
+<li>Rediseñar completamente la arquitectura para tener solamente TAD y no
+módulos funcionales.</li>
+</ul>
+</div>
+<div class="section" id="material-de-lectura-adicional">
+<h1>Material de lectura adicional</h1>
+<ul class="simple">
+<li><a class="reference external" href="https://www.famaf.proed.unc.edu.ar/file.php/9/intro_unit_testing.html">Introducción a Unit Testing.</li>
+<li><a class="reference external" href="http://www.faqs.org/docs/artu/ch07s02.html#plumbing">Pipes, Redirection, and
+Filters</a> del
+libro <em>The Art of Unix Programming</em>.</li>
+<li>Capítulo 3:
+<a class="reference external" href="http://www.advancedlinuxprogramming.com/alp-folder/alp-ch03-processes.pdf">Process</a>
+y Capítulo 5: <a class="reference external" href="http://www.advancedlinuxprogramming.com/alp-folder/alp-ch05-ipc.pdf">Interprocess
+Communication</a>
+del libro <em>Advanced Linux Programming</em>.</li>
+<li>Capítulo 2: <a class="reference external" href="http://www.advancedlinuxprogramming.com/alp-folder/alp-ch02-writing-good-gnu-linux-software.pdf">Escribiendo buenos programas
+GNU/Linux</a>
+del libro <em>Advanced Linux Programming</em> muestra ejemplos de
+programación defensiva.</li>
+<li>Capítulo <a class="reference external" href="http://www.gnu.org/software/libc/manual/html_node/Implementing-a-Shell.html">Implementing a Job Control
+Shell</a>,
+de <em>The GNU C Library Reference Manual</em>.</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

@@ -29,9 +29,7 @@ void scommand_push_back(scommand self, bstring argument){
 
 void scommand_pop_front(scommand self){
        assert(self!=NULL && !scommand_is_empty(self));
-       printf("Entro al scommand por front ! \n");
       self->list = g_slist_remove(self->list,self->list->data); //elimina el elemento que contenga el dato self->list->data (primero)
-       printf("Salio del scommand pop front ! \n");
 }
 
 
@@ -58,17 +56,15 @@ bool scommand_is_empty(const scommand self){
 unsigned int scommand_length(const scommand self){
        unsigned int aux ;
        assert(self!=NULL);          
-       aux = g_slist_length(self->list);        
+       aux = g_slist_length(self->list) - 1;        
        return aux;
 }
 
 
 const_bstring scommand_front(const scommand self){
        const_bstring aux ;
-       printf("Entro al scommand front ! \n");
        assert(self!=NULL && !scommand_is_empty(self));
-       aux = (const_bstring)g_slist_nth (self->list,1);
-       printf("Salio del scommand front ! \n");
+       aux = (const_bstring)g_slist_nth (self->list,0);
        return aux;
 }
 
@@ -87,7 +83,6 @@ const_bstring scommand_get_redir_out(const scommand self){
 }
 
 
-
 bstring scommand_to_string(const scommand self){
        
        int j ;
@@ -97,7 +92,7 @@ bstring scommand_to_string(const scommand self){
        }      
        j = 0;
        ret = self->list->data;
-       for (unsigned int i = 1; i < g_slist_length (self->list); i++){
+       for (unsigned int i = 0; i < scommand_length(self); i++){
             j = bconcat(ret,(const_bstring) g_slist_nth (self->list, i));  
             assert(j == BSTR_ERR);
        };      
@@ -157,7 +152,7 @@ unsigned int pipeline_length(const pipeline self){
       
        unsigned int length;
        assert(self!=NULL);
-       length = g_slist_length(self->list);
+       length = g_slist_length(self->list) - 1;
        return length;
 }
 
@@ -166,7 +161,7 @@ scommand pipeline_front(const pipeline self){
       
         scommand first;
         assert(self!=NULL && !pipeline_is_empty(self));
-        first = (scommand)g_slist_nth(self->list,1);
+        first = (scommand)g_slist_nth(self->list,0);
         return first;
 }
 

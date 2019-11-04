@@ -19,4 +19,9 @@ void execute_pipeline(pipeline apipe);
 
 void extern_run (pipeline pipeline);
 
+
+int exec_simple_command(pipeline pipeline);
+
+/* Ejecuta un comando simple */
+
 #endif /* EXECUTE_H */

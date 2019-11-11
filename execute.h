@@ -24,4 +24,8 @@ int exec_simple_command(pipeline pipeline);
 
 /* Ejecuta un comando simple */
 
+int exec_pipe_command(pipeline pipeline);
+
+/* Ejecuta un pipe */
+
 #endif /* EXECUTE_H */

@@ -42,6 +42,7 @@ struct scommand_s {
     bstring out;
 };
 
+typedef struct pipeline_s * pipeline;
 
 struct pipeline_s {
     GSList *list;
@@ -167,7 +168,6 @@ bstring scommand_to_string(const scommand self);
  *           ------------------------------
  */
 
-typedef struct pipeline_s * pipeline;
 
 pipeline pipeline_new(void);
 /*

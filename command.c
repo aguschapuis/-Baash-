@@ -5,20 +5,21 @@
 #include <stdio.h>
 
 scommand scommand_new(void){
-      scommand new = calloc(sizeof(scommand),1);
-      new->list = g_slist_alloc();
-      new->in = NULL;
-      new->out = NULL;
-      return new;
+       scommand new = calloc(1, sizeof(scommand));
+       new->list = NULL;
+       new->in = NULL;
+       new->out = NULL;
+       return new;
 }
 
 
 scommand scommand_destroy(scommand self){
        assert(self != NULL);
-      g_slist_free(self->list);
-      self->in = NULL;
-      self->out = NULL;
-      return self;
+       g_slist_free(self->list);
+       self->in = NULL;
+       self->out = NULL;
+       self = NULL;
+       return self;
 }
 
 void scommand_push_back(scommand self, bstring argument){
@@ -28,75 +29,79 @@ void scommand_push_back(scommand self, bstring argument){
 
 
 void scommand_pop_front(scommand self){
+
        assert(self!=NULL && !scommand_is_empty(self));
-      self->list = g_slist_remove(self->list,self->list->data); //elimina el elemento que contenga el dato self->list->data (primero)
+       self->list = g_slist_remove(self->list,self->list->data); //elimina el elemento que contenga el dato self->list->data (primero)
 }
 
 
      
 void scommand_set_redir_in(scommand self, bstring filename) {
        assert(self!=NULL);
-      self->in = filename;
+       self->in = filename;
 }
 
 
 void scommand_set_redir_out(scommand self, bstring filename){
-      assert(self!=NULL);
-      self->out = filename;
+       assert(self!=NULL);
+       self->out = filename;
 }
 
 bool scommand_is_empty(const scommand self){
        assert(self!=NULL);
-       if ((g_slist_length(self->list)) == 0) {
-              return true;
-       };
-       return false;
+       return (self->list == NULL);
 }
 
 unsigned int scommand_length(const scommand self){
-       unsigned int aux ;
-       assert(self!=NULL);          
-       aux = g_slist_length(self->list) - 1;        
-       return aux;
+       
+       assert(self!=NULL);                  
+       return g_slist_length(self->list);
 }
 
 
 const_bstring scommand_front(const scommand self){
-       const_bstring aux ;
-       assert(self!=NULL && !scommand_is_empty(self));
-       aux = (const_bstring)g_slist_nth (self->list,0);
-       return aux;
+
+       assert(self!=NULL && !scommand_is_empty(self)); 
+       return (const_bstring)self->list->data;
 }
 
 const_bstring scommand_get_redir_in(const scommand self) {
        const_bstring aux;
-      assert(self!=NULL);
-       aux = (const_bstring)self->in->data;
+       assert(self!=NULL);
+       aux = (const_bstring)self->in;
        return aux;
 }
 
 const_bstring scommand_get_redir_out(const scommand self){
        const_bstring aux;
-     assert(self!=NULL);
-       aux = (const_bstring)self->out->data;
+       assert(self!=NULL);
+       aux = (const_bstring)self->out;
        return aux;
 }
 
 
 bstring scommand_to_string(const scommand self){
        
-       int j ;
-       bstring ret ;
+       unsigned int length;
+       int j;
+       bstring ret;
+       assert(self != NULL);
        if (self == NULL){
               return NULL;
        }      
+       length = scommand_length(self);
        j = 0;
-       ret = self->list->data;
-       for (unsigned int i = 0; i < scommand_length(self); i++){
-            j = bconcat(ret,(const_bstring) g_slist_nth (self->list, i));  
+       ret = NULL;
+
+       for (unsigned int i = 0; i < length; i++){
+            j = bconcat(ret,(const_bstring)g_slist_nth_data(self->list, i));  
             assert(j == BSTR_ERR);
-       };      
-       scommand_destroy(self);
+            /*if(i < length - 1){
+            j = bconcat(ret, (const_bstring)" ");
+            }  */
+            //scommand_pop_front(self);
+       }
+       //scommand_destroy(self);
        return ret;      
 }
 
@@ -105,7 +110,7 @@ bstring scommand_to_string(const scommand self){
 pipeline pipeline_new(void){
 
        pipeline new = calloc(sizeof(pipeline),1);
-       new->list = g_slist_alloc();
+       new->list = NULL;
        new->wait = true;
        return new;
 }
@@ -114,6 +119,7 @@ pipeline pipeline_destroy(pipeline self){
  
        assert(self!=NULL);
        g_slist_free(self->list);
+       self = NULL;
        return self;
 }
 
@@ -139,89 +145,54 @@ void pipeline_set_wait(pipeline self, const bool w){
 }
 
 
-
 bool pipeline_is_empty(const pipeline self){
       
        assert(self!=NULL);
-       bool aux = (g_slist_length(self->list) == 0) ;
-       return aux;
+       return (self->list == NULL);
 }
 
 
 unsigned int pipeline_length(const pipeline self){
       
-       unsigned int length;
-       assert(self!=NULL);
-       length = g_slist_length(self->list) - 1;
-       return length;
+       assert(self!=NULL); 
+       return g_slist_length(self->list);
 }
 
 
 scommand pipeline_front(const pipeline self){
       
-        scommand first;
         assert(self!=NULL && !pipeline_is_empty(self));
-        first = (scommand)g_slist_nth(self->list,0);
-        return first;
+        return self->list->data;
 }
 
 
 bool pipeline_get_wait(const pipeline self){
        
         assert(self!=NULL);
-        bool wait = (self->wait == true);
-        return wait;
+        return (self->wait == true);
 }
 
 
 bstring pipeline_to_string(const pipeline self){
 
+        unsigned int length; 
         int j;
         bstring ret;
-        if (self == NULL){
-            return NULL;
-        }
-        ret = scommand_to_string(self->list->data);
-        for (unsigned int i = 1; i < g_slist_length (self->list); i++) {
-              j = bconcat(ret, (const_bstring) scommand_to_string((scommand)g_slist_nth (self->list, i)));
-              assert(j == BSTR_ERR);
+        assert(self != NULL);
+        length = pipeline_length(self);
+        ret = NULL;
+        for (unsigned int i = 0; i < length; i++) {
+              j = bconcat(ret, (const_bstring) scommand_to_string(self->list->data));
+              if (j == BSTR_ERR){
+                     printf("error\n");
+                     return NULL;
+              }
+              //assert(j == BSTR_ERR);
+              if (!(self->list->next == NULL)){
+                     j = bconcat(ret, (const_bstring) " | ");
+              }
+              pipeline_pop_front(self);
         }
         pipeline_destroy(self);
         return ret;
 }                     
-
-
-
-
-
-
-
-
-
-
-
-         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

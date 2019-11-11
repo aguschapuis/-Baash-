@@ -11,22 +11,28 @@
 
 int main (void){
 
-       FILE *input;
-       char buff[1024];      
-       pipeline pipeline;
-       Parser parser;
+       //FILE *input;
+       //char buff[512];      
+       pipeline pipe;
+       Parser input;
+       input = parser_new(stdin);
 
        while(1) {
-            printf("~/Home/baash $\t");
-            fgets (buff, sizeof(buff), stdin);
-            input = (fopen ("input.txt", "w+"));            
-            fprintf(input, "%s" , (const char *)buff);
-            parser = parser_new(input);
-            pipeline = parse_pipeline(parser);
-            execute_pipeline(pipeline);
-            fclose(input);
-            remove("input.txt");            
-            parser_destroy(parser);
+            printf("~baash $  ");
+            //fgets (buff, sizeof(buff), stdin);
+            //stdin = (fopen ("input.txt", "w+"));            
+            //fprintf(stdin, "%s" , (const char *)buff);     
+            pipe = parse_pipeline(input);
+            if (pipe == NULL){
+                 printf("Hubo un error de sintaxis\n");
+                 continue;
+            }
+            printf("Entro a execute\n");
+            execute_pipeline(pipe);
+            printf("Salio de execute\n");     
+            //fclose(input);
+            //remove("input.txt");            
+            //parser_destroy(input);
        }
        return 0;     
 }

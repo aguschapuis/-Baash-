@@ -82,26 +82,24 @@ const_bstring scommand_get_redir_out(const scommand self){
 
 bstring scommand_to_string(const scommand self){
        
-       unsigned int length;
-       int j;
        bstring ret;
+       int j;
        assert(self != NULL);
        if (self == NULL){
               return NULL;
        }      
-       length = scommand_length(self);
-       j = 0;
        ret = NULL;
+       while (!(self->list == NULL)){
+              j = bconcat(ret, (const_bstring)g_slist_nth(self->list, 0));
+              assert(j == BSTR_ERR);
+              printf("algo\n");
+              if (self->list->next != NULL){
+                 j = bconcat(ret,(const_bstring)" ");
+                 printf("algo2\n");
+              }
+             scommand_pop_front(self);
 
-       for (unsigned int i = 0; i < length; i++){
-            j = bconcat(ret,(const_bstring)g_slist_nth_data(self->list, i));  
-            assert(j == BSTR_ERR);
-            /*if(i < length - 1){
-            j = bconcat(ret, (const_bstring)" ");
-            }  */
-            //scommand_pop_front(self);
        }
-       //scommand_destroy(self);
        return ret;      
 }
 

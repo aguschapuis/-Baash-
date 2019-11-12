@@ -18,7 +18,6 @@ int exec_simple_command(pipeline pipeline){
          printf("scommand NULL\n"); 
       }
       argv = (char **)scommand_to_string(first);  
-      printf("%s \n", *argv);
       pid = fork();
       if (pid == 0){
          if(execvp(argv[0], argv) < 0){

@@ -27,9 +27,9 @@ int main (void){
                  printf("Hubo un error de sintaxis\n");
                  continue;
             }
-            printf("Entro a execute\n");
+          //   printf("Entro a execute\n");
             execute_pipeline(pipe);
-            printf("Salio de execute\n");     
+          //   printf("Salio de execute\n");     
             //fclose(input);
             //remove("input.txt");            
             //parser_destroy(input);

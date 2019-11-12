@@ -2,32 +2,31 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#define CD_WRONG 2
+#define EXIT_WRONG 3
 
 /*Esta primer funcion determina cual de los 3 valores de cmd_id le corresponde al pipe*/
 
 cmd_id builtin_index (const pipeline pipe){
     cmd_id index;
-    if (bstricmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"))){
+    if (bstricmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd")) == 0){
         index = BUILTIN_CHDIR;
-    printf("El index es chdir\n");    
+        return index;
     }
-    // else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"),2)){
-        // printf("Incorrect comand \n Try with 'cd' ");
-        // _exit(1);
-    // }
-    else if (bstricmp(scommand_front(pipeline_front(pipe)), bfromcstr("exit"))){
+    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"),2)==0){
+        return CD_WRONG;
+    }
+    else if (bstricmp(scommand_front(pipeline_front(pipe)), bfromcstr("exit")) == 0){
         index = BUILTIN_EXIT;
-        printf("El index es exit\n");
+        return index;
     }
-    // else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("exit"),4)){
-        // printf("Incorrect comand \n Try with 'exit' ");
-        // _exit(1);
-    // }
+    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("exit"),4) == 0){
+        return EXIT_WRONG;
+    }
     else {
         index = BUILTIN_UNKNOWN;
-        printf("El index es desconocidp\n");
+        return index;
     }
-    return index;
 
 }
 
@@ -44,24 +43,37 @@ bool builtin_is_exit (const pipeline pipe){
 
 void builtin_run (const pipeline pipe){
     cmd_id index = builtin_index(pipe);
-    const_bstring frst_scomand;
-    const char * dir;
-    if(index==BUILTIN_CHDIR){
-        pipeline_pop_front(pipe);
-        frst_scomand = scommand_front(pipeline_front(pipe)); //primer scomand por eso el nombre 
-        dir = (const char *)frst_scomand->data; //direccion a la que tiene que dirijirse chdir
-        chdir(dir);
-        pipeline_destroy(pipe);
+    if(index != CD_WRONG && index != EXIT_WRONG){
+        const_bstring frst_scomand;
+        const char * dir;
+        if(index==BUILTIN_CHDIR){
+            scommand_pop_front(pipeline_front(pipe));
+            if(scommand_is_empty(pipeline_front(pipe))){
+                printf("---------- Must to give a direction after cd ----------\n");
+            }
+            else{
+                frst_scomand = scommand_front(pipeline_front(pipe)); //primer scomand por eso el nombre 
+                dir = (const char *)frst_scomand->data; //direccion a la que tiene que dirijirse chdir
+                chdir(dir);
+                pipeline_destroy(pipe);       
+            }
+        }
+        else if (builtin_is_exit(pipe)){
+            pipeline_destroy(pipe);
+            _exit(0); //EXIT_SUCESS
+        }
+        else {
+            _exit(1); //EXIT FAILURE
+        }
     }
-    else if (builtin_is_exit(pipe)){
-        pipeline_destroy(pipe);
-        _exit(0); //EXIT_SUCESS
+    else if(index == CD_WRONG){
+        printf("---------- Incorrect comand. Try with 'cd' ----------\n");
     }
-    else {
-        _exit(1); //EXIT FAILURE
+    else if(index == EXIT_WRONG){
+        printf("---------- Incorrect comand. Try with 'exit' ----------\n");
+    }
+    else{
+        printf("---------- Incorrect comand ----------\n");
     }
     
-
-
-
 }

@@ -106,7 +106,7 @@ void extern_run (pipeline apipe) {
 void execute_pipeline(pipeline apipe) {
 
         
-        if (1 /*builtin_index(pipeline) < 0*/) {
+        if (builtin_index(apipe) < 0) {
                printf("run extern\n");
                extern_run(apipe);
          } else {

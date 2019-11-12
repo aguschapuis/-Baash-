@@ -9,18 +9,18 @@
 
 cmd_id builtin_index (const pipeline pipe){
     cmd_id index;
-    if (bstricmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd")) == 0){
+    if (bstricmp (scommand_front (pipeline_front (pipe)), bfromcstr ("cd")) == 0){
         index = BUILTIN_CHDIR;
         return index;
     }
-    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("cd"),2)==0){
+    else if(bstrncmp (scommand_front (pipeline_front (pipe)), bfromcstr ("cd"), 2)==0){
         return CD_WRONG;
     }
-    else if (bstricmp(scommand_front(pipeline_front(pipe)), bfromcstr("exit")) == 0){
+    else if (bstricmp (scommand_front (pipeline_front (pipe)), bfromcstr ("exit")) == 0){
         index = BUILTIN_EXIT;
         return index;
     }
-    else if(bstrncmp(scommand_front(pipeline_front(pipe)),bfromcstr("exit"),4) == 0){
+    else if(bstrncmp (scommand_front (pipeline_front (pipe)), bfromcstr ("exit"), 4) == 0){
         return EXIT_WRONG;
     }
     else {
@@ -34,7 +34,7 @@ cmd_id builtin_index (const pipeline pipe){
 
 bool builtin_is_exit (const pipeline pipe){
     cmd_id index = builtin_index(pipe);
-    return (index==BUILTIN_EXIT);
+    return (index == BUILTIN_EXIT);
 
 }
 
@@ -47,12 +47,12 @@ void builtin_run (const pipeline pipe){
         const_bstring frst_scomand;
         const char * dir;
         if(index==BUILTIN_CHDIR){
-            scommand_pop_front(pipeline_front(pipe));
-            if(scommand_is_empty(pipeline_front(pipe))){
+            scommand_pop_front(pipeline_front (pipe));
+            if(scommand_is_empty(pipeline_front (pipe))){
                 printf("---------- Must to give a direction after cd ----------\n");
             }
             else{
-                frst_scomand = scommand_front(pipeline_front(pipe)); //primer scomand por eso el nombre 
+                frst_scomand = scommand_front(pipeline_front (pipe)); //primer scomand por eso el nombre 
                 dir = (const char *)frst_scomand->data; //direccion a la que tiene que dirijirse chdir
                 chdir(dir);
                 pipeline_destroy(pipe);       

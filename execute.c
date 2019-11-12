@@ -10,14 +10,19 @@
 int exec_simple_command(pipeline pipeline){
     
       int pid;
-      char **argv;
       scommand first;
+      char **argv;
       printf("exec\n");
       first = pipeline_front(pipeline);
       if(first == NULL){
          printf("scommand NULL\n"); 
       }
-      argv = (char **)scommand_to_string(first);  
+      argv = calloc(sizeof(char *), scommand_length(first)-1);
+      for(unsigned int i = 0; i < scommand_length(first); i++){
+          argv[i] = (char *)scommand_front(first)->data;
+          scommand_pop_front(first);
+      } 
+      printf("%s\n", argv[0]);
       pid = fork();
       if (pid == 0){
          if(execvp(argv[0], argv) < 0){
@@ -35,6 +40,7 @@ int exec_pipe_command(pipeline pipeline){
        scommand first;
        scommand second;
        char **argv;
+       
        int fd[2];
        int pid1, pid2;
 

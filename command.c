@@ -92,10 +92,8 @@ bstring scommand_to_string(const scommand self){
        while (!(self->list == NULL)){
               j = bconcat(ret, (const_bstring)g_slist_nth(self->list, 0));
               assert(j == BSTR_ERR);
-              printf("algo\n");
               if (self->list->next != NULL){
                  j = bconcat(ret,(const_bstring)" ");
-                 printf("algo2\n");
               }
              scommand_pop_front(self);
 

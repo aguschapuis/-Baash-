@@ -18,7 +18,7 @@ int main (void){
   
    while(1) {
   getcwd(cwd,sizeof(cwd));
-  printf("\033[0;31m");
+  printf("\033[1;32m");
   printf("%s ~baash $ ",cwd);
   printf("\033[0m");
 
@@ -27,7 +27,7 @@ int main (void){
   //fprintf(stdin, "%s" , (const char *)buff);     
   pipe = parse_pipeline(input);
   if (pipe == NULL){
-       printf("Hubo un error de sintaxis\n");
+       printf("The command is not valid\n");
        continue;
   }
   //   printf("Entro a execute\n");

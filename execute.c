@@ -12,7 +12,7 @@ int exec_simple_command(pipeline pipeline){
       int pid;
       scommand first;
       char **argv;
-      printf("exec\n");
+      // printf("exec\n");
       first = pipeline_front(pipeline);
       if(first == NULL){
          printf("scommand NULL\n"); 
@@ -22,7 +22,7 @@ int exec_simple_command(pipeline pipeline){
           argv[i] = (char *)scommand_front(first)->data;
           scommand_pop_front(first);
       } 
-      printf("%s\n", argv[0]);
+      // printf("%s\n", argv[0]);
       pid = fork();
       if (pid == 0){
          if(execvp(argv[0], argv) < 0){
@@ -95,9 +95,9 @@ int exec_pipe_command(pipeline pipeline){
 void extern_run (pipeline apipe) {
 
         int pipe_length;
-        printf("extern\n");
+      //   printf("extern\n");
         pipe_length = pipeline_length(apipe);
-        printf("%d\n" , pipe_length);
+      //   printf("%d\n" , pipe_length);
         if (pipe_length == 1){
            exec_simple_command(apipe);
         } else if (pipe_length > 1){
@@ -112,7 +112,7 @@ void execute_pipeline(pipeline apipe) {
 
         
         if (builtin_index(apipe) < 0) {
-               printf("run extern\n");
+               // printf("run extern\n");
                extern_run(apipe);
          } else {
                builtin_run(apipe);

@@ -18,25 +18,16 @@ int main (void){
   
    while(1) {
   getcwd(cwd,sizeof(cwd));
-  printf("\033[0;31m");
+  printf("\033[1;32m");
   printf("%s ~baash $ ",cwd);
-  printf("\033[0m");
-
-  //fgets (buff, sizeof(buff), stdin);
-  //stdin = (fopen ("input.txt", "w+"));            
-  //fprintf(stdin, "%s" , (const char *)buff);     
+  printf("\033[0m");   
   pipe = parse_pipeline(input);
   if (pipe == NULL){
-       printf("Hubo un error de sintaxis\n");
+      //  printf("Command isn't right\n");
        continue;
   }
-  //   printf("Entro a execute\n");
-    execute_pipeline(pipe);
-  //   printf("Salio de execute\n");     
-    //fclose(input);
-    //remove("input.txt");            
-    //parser_destroy(input);
-  }
+  execute_pipeline(pipe);
+}
   return 0;     
 }
 

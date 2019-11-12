@@ -60,7 +60,7 @@ void builtin_run (const pipeline pipe){
         }
         else if (builtin_is_exit(pipe)){
             pipeline_destroy(pipe);
-            _exit(0); //EXIT_SUCESS
+            _exit(1); //EXIT_SUCESS
         }
         else {
             _exit(1); //EXIT FAILURE

@@ -85,17 +85,12 @@ bstring scommand_to_string(const scommand self){
        bstring ret;
        int j;
        assert(self != NULL);
-       if (self == NULL){
-              return NULL;
-       }      
        ret = NULL;
        while (!(self->list == NULL)){
-              j = bconcat(ret, (const_bstring)g_slist_nth(self->list, 0));
-              assert(j == BSTR_ERR);
-              printf("algo\n");
+                     j = bconcat(ret, (const_bstring)g_slist_nth(self->list, 0));
+                     assert(j == BSTR_ERR);
               if (self->list->next != NULL){
-                 j = bconcat(ret,(const_bstring)" ");
-                 printf("algo2\n");
+                     j = bconcat(ret,(const_bstring)" ");
               }
              scommand_pop_front(self);
 

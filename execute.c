@@ -8,31 +8,37 @@
 
 
 int exec_simple_command(pipeline pipeline){
-    
-      int pid;
-      scommand first;
-      char **argv;
-      // printf("exec\n");
-      first = pipeline_front(pipeline);
-      if(first == NULL){
-         printf("scommand NULL\n"); 
-      }
-      argv = calloc(sizeof(char *), scommand_length(first)-1);
-      for(unsigned int i = 0; i < scommand_length(first); i++){
+   
+   int pid;
+   scommand first;
+   char **argv;
+   first = pipeline_front(pipeline);
+   
+   if(first == NULL){
+      printf("scommand NULL\n"); 
+   }
+   
+   argv = calloc(scommand_length(first)+1, sizeof(char *));      
+   
+   if(scommand_length(first) == 1){
+      argv[0] = (char *)scommand_front(first)->data;
+      scommand_pop_front(first);
+   }else{
+      for(unsigned int i = 0; i <= scommand_length(first)+1; i++){
           argv[i] = (char *)scommand_front(first)->data;
           scommand_pop_front(first);
-      } 
-      // printf("%s\n", argv[0]);
+      }
+      }
       pid = fork();
       if (pid == 0){
          if(execvp(argv[0], argv) < 0){
-             printf("Could not execute the command\n");
+             printf("%s : Incorrect command\n",argv[0]);
              return -1;
          }
        } else {
            wait(NULL);
        }
-       return 0;
+   return 0;
 }
 
 int exec_pipe_command(pipeline pipeline){
@@ -64,7 +70,7 @@ int exec_pipe_command(pipeline pipeline){
          close(fd[1]);
          argv = (char **)scommand_to_string(first);
          if (execvp(argv[0], argv) < 0){
-           printf("Could not execute the first command\n");
+           printf("Could not execute the command\n");
            return -1;
          }
        } else {
@@ -95,9 +101,7 @@ int exec_pipe_command(pipeline pipeline){
 void extern_run (pipeline apipe) {
 
         int pipe_length;
-      //   printf("extern\n");
         pipe_length = pipeline_length(apipe);
-      //   printf("%d\n" , pipe_length);
         if (pipe_length == 1){
            exec_simple_command(apipe);
         } else if (pipe_length > 1){
@@ -112,7 +116,6 @@ void execute_pipeline(pipeline apipe) {
 
         
         if (builtin_index(apipe) < 0) {
-               // printf("run extern\n");
                extern_run(apipe);
          } else {
                builtin_run(apipe);

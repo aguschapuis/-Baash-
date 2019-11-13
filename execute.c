@@ -20,39 +20,35 @@ int exec_simple_command(pipeline pipeline){
    if(first == NULL){
       printf("scommand NULL\n"); 
    }
-
-
    argv = calloc(scommand_length(first)+1, sizeof(char *));      
-
-   if(scommand_length(first) == 1){
+   if (scommand_length(first) == 1) {
       argv[0] = (char *)scommand_front(first)->data;
       scommand_pop_front(first);
-   }else{
+   } else {
       for(unsigned int i = 0; i <= scommand_length(first)+1 ; i++){
           argv[i] = (char *)scommand_front(first)->data;
           scommand_pop_front(first);
       }
+   }
+   pid = fork();
+   if (pid == 0){
+      if(first->in != NULL){
+         infile = fopen((const char *)first->in->data, "r");
+         dup2(infile->_fileno, 0);
+         fclose(infile);
       }
-      pid = fork();
-      if (pid == 0){
-         if(first->in != NULL){
-            infile = fopen((const char *)first->in->data, "r");
-            dup2(infile->_fileno, 0);
-            fclose(infile);
-         }
-         if (first->out != NULL){
-            outfile = fopen((const char *)first->out->data, "w");
-            dup2(outfile->_fileno , 1);
-            fclose(outfile);
-         }
-
-         if(execvp(argv[0], argv) < 0){
-             printf("%s : Incorrect command\n",argv[0]);
-             return -1;
-         }
-       } else {
-           wait(NULL);
-       }
+      if (first->out != NULL){
+         outfile = fopen((const char *)first->out->data, "w");
+         dup2(outfile->_fileno , 1);
+         fclose(outfile);
+      }
+      if(execvp(argv[0], argv) < 0){
+         printf("%s : Incorrect command\n",argv[0]);
+         return -1;
+      }
+   } else {
+      wait(NULL);
+   }
    return 0;
 }
 
@@ -80,15 +76,19 @@ int exec_pipe_command(pipeline apipe){
          return -1;
        }
        if (pid1 == 0){        //ejecuto el primer hijo
-         
          argv = calloc(sizeof(char *), scommand_length(first));
-         for(unsigned int i = 0; i <= scommand_length(first); i++){
-            argv[i] = (char *)scommand_front(first)->data;
-            scommand_pop_front(first);
-         } 
-         close(fd[0]);
+         if (scommand_length(first) == 1) {
+           argv[0] = (char *)scommand_front(first)->data;
+           scommand_pop_front(first);
+         } else {
+           for(unsigned int i = 0; i <= scommand_length(first); i++){
+              argv[i] = (char *)scommand_front(first)->data;
+              scommand_pop_front(first);
+            }  
+         }
          dup2(fd[1],STDOUT_FILENO);
          close(fd[1]);
+         close(fd[0]);
          if (execvp(argv[0], argv) < 0){
            printf("Could not execute the command\n");
            return -1;
@@ -101,18 +101,25 @@ int exec_pipe_command(pipeline apipe){
           } 
           if (pid2 == 0){
              argv = calloc(sizeof(char *), scommand_length(second));
-             for(unsigned int i = 0; i <= scommand_length(second); i++){
-               argv[i] = (char *)scommand_front(second)->data;
-               scommand_pop_front(second);
-             } 
-             close(fd[1]); 
+             if (scommand_length(second) == 1) {
+               argv[0] = (char *)scommand_front(second)->data;
+               scommand_pop_front(first);
+             } else {
+               for(unsigned int i = 0; i <= scommand_length(second); i++){
+                 argv[i] = (char *)scommand_front(second)->data;
+                 scommand_pop_front(second);
+               }
+             }   
 			    dup2(fd[0], STDIN_FILENO); 
              close(fd[0]);		
+             close(fd[1]); 
              if(execvp(argv[0], argv) < 0){
                 printf("Could not execute the second command\n");
                 return -1;
              } 
           } else {
+             close(fd[0]);
+             close(fd[1]);
              if(pipeline_get_wait(apipe))
                 wait(NULL);   
           }

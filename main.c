@@ -15,19 +15,17 @@ int main (void){
   Parser input;
   input = parser_new(stdin);
   
-  
    while(1) {
-  getcwd(cwd,sizeof(cwd));
-  printf("\033[1;32m");
-  printf("%s ~baash $ ",cwd);
-  printf("\033[0m");   
-  pipe = parse_pipeline(input);
-  if (pipe == NULL){
-      //  printf("Command isn't right\n");
-       continue;
+    getcwd(cwd,sizeof(cwd));
+    printf("\033[1;32m");
+    printf("%s ~baash $ ",cwd);
+    printf("\033[0m");   
+    pipe = parse_pipeline(input);
+    if (pipe == NULL){
+         continue;
+    }
+    execute_pipeline(pipe);
   }
-  execute_pipeline(pipe);
-}
   return 0;     
 }
 

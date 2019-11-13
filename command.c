@@ -81,20 +81,25 @@ const_bstring scommand_get_redir_out(const scommand self){
 
 
 bstring scommand_to_string(const scommand self){
-       
        bstring ret;
        int j;
        assert(self != NULL);
        ret = NULL;
-       while (!(self->list == NULL)){
-                     j = bconcat(ret, (const_bstring)g_slist_nth(self->list, 0));
-                     assert(j == BSTR_ERR);
-              if (self->list->next != NULL){
-                     j = bconcat(ret,(const_bstring)" ");
-              }
-             scommand_pop_front(self);
-
+       for(unsigned int i = 0 ; i < scommand_length(self) ; i++){
+                     if (i != 0){
+                     j = bconcat(ret, bfromcstr(" "));
+                            assert(j != BSTR_ERR);
+                     }
+                     if (i==0){
+                            ret = g_slist_nth_data(self->list,0);
+                     }
+                     else{
+                            j = bconcat(ret,g_slist_nth_data(self->list,0));      
+                            assert(j != BSTR_ERR);
+                     }
+                     scommand_pop_front(self);
        }
+       assert(scommand_is_empty(self) || scommand_get_redir_in(self)==NULL || scommand_get_redir_out(self)==NULL || blength(ret)>0);
        return ret;      
 }
 
@@ -173,7 +178,7 @@ bstring pipeline_to_string(const pipeline self){
         bstring ret;
         assert(self != NULL);
         length = pipeline_length(self);
-        ret = NULL;
+        ret = bfromcstr("");
         for (unsigned int i = 0; i < length; i++) {
               j = bconcat(ret, (const_bstring) scommand_to_string(self->list->data));
               if (j == BSTR_ERR){
@@ -181,11 +186,12 @@ bstring pipeline_to_string(const pipeline self){
                      return NULL;
               }
               //assert(j == BSTR_ERR);
-              if (!(self->list->next == NULL)){
-                     j = bconcat(ret, (const_bstring) " | ");
+              if (self->list->next != NULL){
+                     j = bconcat(ret, bfromcstr(" "));
               }
               pipeline_pop_front(self);
         }
         pipeline_destroy(self);
+        assert(pipeline_is_empty(self) || pipeline_get_wait(self) || blength(ret)>0);
         return ret;
 }                     

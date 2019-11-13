@@ -1,6 +1,7 @@
 #include "builtin.h"
 #include <unistd.h>
 #include <stdio.h>
+#include "tests/syscall_mock.h"
 
 #define CD_WRONG 2
 #define EXIT_WRONG 3

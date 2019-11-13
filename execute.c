@@ -5,42 +5,46 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-
+#include "tests/syscall_mock.h"
 
 int exec_simple_command(pipeline pipeline){
    
    int pid;
    scommand first;
    char **argv;
+   FILE *infile;
+   FILE *outfile;
+
    first = pipeline_front(pipeline);
    
    if(first == NULL){
       printf("scommand NULL\n"); 
    }
-   
+
+
    argv = calloc(scommand_length(first)+1, sizeof(char *));      
-   
+
    if(scommand_length(first) == 1){
       argv[0] = (char *)scommand_front(first)->data;
       scommand_pop_front(first);
    }else{
-      for(unsigned int i = 0; i <= scommand_length(first)+1; i++){
+      for(unsigned int i = 0; i <= scommand_length(first)+1 ; i++){
           argv[i] = (char *)scommand_front(first)->data;
           scommand_pop_front(first);
       }
       }
       pid = fork();
       if (pid == 0){
-         
          if(first->in != NULL){
             infile = fopen((const char *)first->in->data, "r");
-            dup2(0, infile->_fileno);
+            dup2(infile->_fileno, 0);
+            fclose(infile);
          }
          if (first->out != NULL){
-            outfile = fopen((const char *)first->out->data, "a");
-            dup2(1, outfile->_fileno);
+            outfile = fopen((const char *)first->out->data, "w");
+            dup2(outfile->_fileno , 1);
+            fclose(outfile);
          }
-         
 
          if(execvp(argv[0], argv) < 0){
              printf("%s : Incorrect command\n",argv[0]);

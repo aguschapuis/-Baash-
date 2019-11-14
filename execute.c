@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "tests/syscall_mock.h"
 
 int exec_simple_command(pipeline pipeline){
@@ -12,8 +15,8 @@ int exec_simple_command(pipeline pipeline){
    int pid;
    scommand first;
    char **argv;
-   FILE *infile;
-   FILE *outfile;
+   int infile;
+   int outfile;
 
    first = pipeline_front(pipeline);
    
@@ -34,14 +37,14 @@ int exec_simple_command(pipeline pipeline){
    pid = fork();
    if (pid == 0){
       if(first->in != NULL){
-         infile = fopen((const char *)first->in->data, "r");
-         dup2(infile->_fileno, STDIN_FILENO);
-         fclose(infile);
+         infile = open((const char *)first->in->data, O_RDONLY, S_IRUSR);
+         dup2(infile, STDIN_FILENO);
+         close(infile);
       }
       if (first->out != NULL){
-         outfile = fopen((const char *)first->out->data, "w");
-         dup2(outfile->_fileno , STDOUT_FILENO);
-         fclose(outfile);
+         outfile = open((const char *)first->out->data, O_WRONLY, S_IWUSR);
+         dup2(outfile , STDOUT_FILENO);
+         close(outfile);
       }
       if(execvp(argv[0], argv) < 0){
          printf("%s : Incorrect command\n",argv[0]);
@@ -60,8 +63,8 @@ int exec_pipe_command(pipeline apipe){
        scommand first;
        scommand second;
        char **argv;
-       FILE *infile;
-       FILE *outfile;
+       int infile;
+       int outfile;
        
        int fd[2];
        int pid1, pid2;
@@ -92,16 +95,16 @@ int exec_pipe_command(pipeline apipe){
             }  
          }
          if(first->in != NULL) {
-            infile = fopen((const char *)first->in->data, "r");
-            dup2(infile->_fileno, STDIN_FILENO);
-            fclose(infile);
+            infile = open((const char *)first->in->data, O_RDONLY, S_IRUSR);
+            dup2(infile, STDIN_FILENO);
+            close(infile);
          }
          dup2(fd[1],STDOUT_FILENO);
          close(fd[1]);
          close(fd[0]);
          if (execvp(argv[0], argv) < 0){
            printf("Could not execute the command\n");
-           return -1;
+           exit(0);
          }
          exit(0);
        } else {
@@ -122,16 +125,16 @@ int exec_pipe_command(pipeline apipe){
                }
              }
              if(second->out != NULL){
-                outfile = fopen((const char *)second->out->data, "w");
-                dup2(outfile->_fileno , STDOUT_FILENO);
-                fclose(outfile);
+                outfile = open((const char *)second->out->data, O_WRONLY, S_IWUSR);
+                dup2(outfile , STDOUT_FILENO);
+                close(outfile);
              }   
 			    dup2(fd[0], STDIN_FILENO); 
              close(fd[0]);		
              close(fd[1]); 
              if(execvp(argv[0], argv) < 0){
                 printf("Could not execute the second command\n");
-                return -1;
+                exit(0);
              } 
           } else {
              close(fd[0]);

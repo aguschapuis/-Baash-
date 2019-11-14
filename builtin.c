@@ -45,6 +45,7 @@ bool builtin_is_exit (const pipeline pipe){
 
 void builtin_run (const pipeline pipe){
     cmd_id index = builtin_index(pipe);
+   
     if(index != CD_WRONG && index != EXIT_WRONG){
         const_bstring frst_scomand;
         const char * dir;

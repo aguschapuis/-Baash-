@@ -26,7 +26,7 @@ int exec_simple_command(pipeline pipeline){
       argv[0] = (char *)scommand_front(first)->data;
       scommand_pop_front(first);
    } else {
-      for(unsigned int i = 0; i <= scommand_length(first)+1 ; i++){
+      for(unsigned int i = 0; i <= scommand_length(first)+1; i++){
           argv[i] = (char *)scommand_front(first)->data;
           scommand_pop_front(first);
       }
@@ -35,12 +35,12 @@ int exec_simple_command(pipeline pipeline){
    if (pid == 0){
       if(first->in != NULL){
          infile = fopen((const char *)first->in->data, "r");
-         dup2(infile->_fileno, 0);
+         dup2(infile->_fileno, STDIN_FILENO);
          fclose(infile);
       }
       if (first->out != NULL){
          outfile = fopen((const char *)first->out->data, "w");
-         dup2(outfile->_fileno , 1);
+         dup2(outfile->_fileno , STDOUT_FILENO);
          fclose(outfile);
       }
       if(execvp(argv[0], argv) < 0){
@@ -122,7 +122,7 @@ int exec_pipe_command(pipeline apipe){
                }
              }
              if(second->out != NULL){
-                outfile = fopen((const char *)first->out->data, "w");
+                outfile = fopen((const char *)second->out->data, "w");
                 dup2(outfile->_fileno , STDOUT_FILENO);
                 fclose(outfile);
              }   
@@ -161,13 +161,13 @@ void extern_run (pipeline apipe) {
 
 void execute_pipeline(pipeline apipe) {
 
-        
+       if(!pipeline_is_empty(apipe)){
         if (builtin_index(apipe) < 0) {
                extern_run(apipe);
          } else {
                builtin_run(apipe);
          }
+      }
 }
-
 
 

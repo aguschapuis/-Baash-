@@ -84,20 +84,15 @@ bstring scommand_to_string(const scommand self){
        bstring ret;
        int j;
        assert(self != NULL);
-       ret = NULL;
+       ret = bfromcstralloc(scommand_length(self),"");
        for(unsigned int i = 0 ; i < scommand_length(self) ; i++){
-                     if (i != 0){
+              if (i != 0){
                      j = bconcat(ret, bfromcstr(" "));
-                            assert(j != BSTR_ERR);
-                     }
-                     if (i==0){
-                            ret = g_slist_nth_data(self->list,0);
-                     }
-                     else{
-                            j = bconcat(ret,g_slist_nth_data(self->list,0));      
-                            assert(j != BSTR_ERR);
-                     }
-                     scommand_pop_front(self);
+                     assert(j != BSTR_ERR);
+              }
+              j = bconcat(ret,g_slist_nth_data(self->list,0));      
+              assert(j != BSTR_ERR);
+              scommand_pop_front(self);
        }
        assert(scommand_is_empty(self) || scommand_get_redir_in(self)==NULL || scommand_get_redir_out(self)==NULL || blength(ret)>0);
        return ret;      
@@ -178,16 +173,21 @@ bstring pipeline_to_string(const pipeline self){
         bstring ret;
         assert(self != NULL);
         length = pipeline_length(self);
-        ret = bfromcstr("");
+        ret = bfromcstralloc(length,"");
+        printf("\n%d\n",length);
         for (unsigned int i = 0; i < length; i++) {
-              j = bconcat(ret, (const_bstring) scommand_to_string(self->list->data));
+              j = bconcat(ret, scommand_to_string(self->list->data));
               if (j == BSTR_ERR){
                      printf("error\n");
                      return NULL;
               }
-              //assert(j == BSTR_ERR);
               if (self->list->next != NULL){
-                     j = bconcat(ret, bfromcstr(" "));
+                     if(pipeline_get_wait(self)){
+                            j = bconcat(ret, bfromcstr(" | "));
+                     } 
+                     else{
+                            j = bconcat(ret, bfromcstr(" & "));
+                     } 
               }
               pipeline_pop_front(self);
         }

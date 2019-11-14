@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "tests/syscall_mock.h"
+#include <stdlib.h>
 
 #define CD_WRONG 2
 #define EXIT_WRONG 3
@@ -61,10 +62,7 @@ void builtin_run (const pipeline pipe){
         }
         else if (builtin_is_exit(pipe)){
             pipeline_destroy(pipe);
-            exit(1); //EXIT_SUCESS
-        }
-        else {
-            exit(1); //EXIT FAILURE
+            exit(0); //EXIT_SUCESS
         }
     }
     else if(index == CD_WRONG){

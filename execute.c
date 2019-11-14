@@ -81,12 +81,12 @@ int exec_pipe_command(pipeline apipe){
          return -1;
        }
        if (pid1 == 0){        //ejecuto el primer hijo
-         argv = calloc(sizeof(char *), scommand_length(first));
+         argv = calloc(sizeof(char *), scommand_length(first)+1);
          if (scommand_length(first) == 1) {
            argv[0] = (char *)scommand_front(first)->data;
            scommand_pop_front(first);
          } else {
-           for(unsigned int i = 0; i <= scommand_length(first); i++){
+           for(unsigned int i = 0; i <= scommand_length(first)+1; i++){
               argv[i] = (char *)scommand_front(first)->data;
               scommand_pop_front(first);
             }  
@@ -111,12 +111,12 @@ int exec_pipe_command(pipeline apipe){
              return -1;
           } 
           if (pid2 == 0){
-             argv = calloc(sizeof(char *), scommand_length(second));
+             argv = calloc(sizeof(char *), scommand_length(second)+1);
              if (scommand_length(second) == 1) {
                argv[0] = (char *)scommand_front(second)->data;
-               scommand_pop_front(first);
+               scommand_pop_front(second);
              } else {
-               for(unsigned int i = 0; i <= scommand_length(second); i++){
+               for(unsigned int i = 0; i <= scommand_length(second)+1; i++){
                  argv[i] = (char *)scommand_front(second)->data;
                  scommand_pop_front(second);
                }

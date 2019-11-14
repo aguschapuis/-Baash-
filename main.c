@@ -25,7 +25,6 @@ int main (void){
       continue;
     }
     execute_pipeline(pipe);
-    pipeline_destroy(pipe);
   }
   return 0;     
 }

@@ -21,10 +21,11 @@ int main (void){
     printf("%s ~baash $ ",cwd);
     printf("\033[0m");   
     pipe = parse_pipeline(input);
-    if (pipe == NULL){
-         continue;
+    if(pipe==NULL){
+      continue;
     }
     execute_pipeline(pipe);
+    pipeline_destroy(pipe);
   }
   return 0;     
 }

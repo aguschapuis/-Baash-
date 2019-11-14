@@ -61,10 +61,10 @@ void builtin_run (const pipeline pipe){
         }
         else if (builtin_is_exit(pipe)){
             pipeline_destroy(pipe);
-            _exit(1); //EXIT_SUCESS
+            exit(1); //EXIT_SUCESS
         }
         else {
-            _exit(1); //EXIT FAILURE
+            exit(1); //EXIT FAILURE
         }
     }
     else if(index == CD_WRONG){

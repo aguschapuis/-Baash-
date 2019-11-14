@@ -18,7 +18,8 @@ int exec_simple_command(pipeline pipeline){
    first = pipeline_front(pipeline);
    
    if(first == NULL){
-      printf("scommand NULL\n"); 
+      printf("scommand NULL\n");
+      return -1; 
    }
    argv = calloc(scommand_length(first)+1, sizeof(char *));      
    if (scommand_length(first) == 1) {
@@ -47,8 +48,10 @@ int exec_simple_command(pipeline pipeline){
          return -1;
       }
    } else {
-      wait(NULL);
-   }
+           if(pipeline_get_wait(pipeline)){
+             wait(NULL);
+           }
+   }  
    return 0;
 }
 
@@ -57,6 +60,8 @@ int exec_pipe_command(pipeline apipe){
        scommand first;
        scommand second;
        char **argv;
+       FILE *infile;
+       FILE *outfile;
        
        int fd[2];
        int pid1, pid2;
@@ -86,6 +91,11 @@ int exec_pipe_command(pipeline apipe){
               scommand_pop_front(first);
             }  
          }
+         if(first->in != NULL) {
+            infile = fopen((const char *)first->in->data, "r");
+            dup2(infile->_fileno, STDIN_FILENO);
+            fclose(infile);
+         }
          dup2(fd[1],STDOUT_FILENO);
          close(fd[1]);
          close(fd[0]);
@@ -93,6 +103,7 @@ int exec_pipe_command(pipeline apipe){
            printf("Could not execute the command\n");
            return -1;
          }
+         exit(0);
        } else {
           pid2 = fork();   
           if(pid2 < 0){
@@ -109,6 +120,11 @@ int exec_pipe_command(pipeline apipe){
                  argv[i] = (char *)scommand_front(second)->data;
                  scommand_pop_front(second);
                }
+             }
+             if(second->out != NULL){
+                outfile = fopen((const char *)first->out->data, "w");
+                dup2(outfile->_fileno , STDOUT_FILENO);
+                fclose(outfile);
              }   
 			    dup2(fd[0], STDIN_FILENO); 
              close(fd[0]);		
@@ -121,10 +137,10 @@ int exec_pipe_command(pipeline apipe){
              close(fd[0]);
              close(fd[1]);
              if(pipeline_get_wait(apipe))
-                wait(NULL);   
-          }
-
-
+                wait(NULL);
+             wait(NULL);      
+         }
+        
        }
        return 0;
 }

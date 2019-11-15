@@ -232,8 +232,10 @@ START_TEST (test_to_string)
 	bstring str = NULL;
 	/* MAX_LENGTH veces el mismo comando simple */
 	for (i=0; i<MAX_LENGTH; i++) {
-		pipeline_push_back (pipe, scommand_new ());
-		scommand_push_back (pipeline_front(pipe), bfromcstr ("gtk-fuse"));
+		scommand sc = scommand_new(); 
+		scommand_push_back (sc, bfromcstr ("gtk-fuse"));
+		pipeline_push_back (pipe, sc);
+		
 	}
 	pipeline_set_wait (pipe, false);
 	str = pipeline_to_string (pipe);

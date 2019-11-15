@@ -13,6 +13,7 @@ int main (void){
   char cwd[256];
   pipeline pipe;
   Parser input;
+  // bstring lala;
   input = parser_new(stdin);
   
    while(1) {
@@ -24,6 +25,8 @@ int main (void){
     if(pipe==NULL){
       continue;
     }
+    // lala = pipeline_to_string(pipe);
+    // printf("\n%s\n",lala->data);
     execute_pipeline(pipe);
   }
   return 0;     

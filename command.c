@@ -185,18 +185,19 @@ bstring pipeline_to_string(const pipeline self){
        bstring ret;
        assert(self != NULL);
        length = pipeline_length(self);
-       ret = bfromcstralloc(length,"");
+       ret = bfromcstralloc(64,"");
        
        for (unsigned int i = 0; i < length; i++) {
-             j = bconcat(ret, scommand_to_string(g_slist_nth_data(self->list, i)));
-             assert(j == BSTR_ERR);
-             if (self->list->next != NULL){
-                    if(pipeline_get_wait(self)){
-                           j = bconcat(ret, bfromcstr("|"));
-                    } 
-             }
+              j = bconcat(ret, scommand_to_string(g_slist_nth_data(self->list, i)));
+              assert(j != BSTR_ERR);
+              if(i<length-1){
+                     j = bconcat(ret, bfromcstr(" |"));
+              } 
        }
-       
+
+       if (!pipeline_get_wait(self) ){
+              j = bconcat(ret, bfromcstr(" &"));
+       }
        assert(pipeline_is_empty(self) || pipeline_get_wait(self) || blength(ret)>0);
        return ret;
 }                     

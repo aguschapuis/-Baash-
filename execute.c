@@ -42,7 +42,7 @@ int exec_simple_command(pipeline pipeline){
          close(infile);
       }
       if (first->out != NULL){
-         outfile = open((const char *)first->out->data, O_CREAT | O_RDWR, S_IRWXU);
+         outfile = open((const char *)first->out->data, O_WRONLY | O_CREAT, S_IRWXU );
          dup2(outfile , STDOUT_FILENO);
          close(outfile);
       }
@@ -124,7 +124,7 @@ int exec_pipe_command(pipeline apipe){
             }
          }
          if(second->out != NULL){
-            outfile = open((const char *)second->out->data, O_CREAT | O_RDWR, S_IRWXU);
+            outfile = open((const char *)second->out->data, O_WRONLY | O_CREAT, S_IRWXU);
             dup2(outfile , STDOUT_FILENO);
             close(outfile);
          }   

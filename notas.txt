@@ -1,0 +1,14 @@
+1. wait vs. waitpid?
+2. valgrind para memtest
+	(algunos van a quedar por bstring)
+	2.1. leaks varios (no olvidar destroy/free)
+	por ejemplo:
+	main:  {parser, pipeline}_destroy no se llama.
+	execute: se llama calloc para argv y no se llama a free.
+
+3. execute: redundancia en la construcción de argv
+	    redundancia en la configuración de red_{in, out}
+
+4. Faltan comentarios en el código que ayuden a entender los bloques (que podrían modularizarse en funciones aparte [punto anterior])
+5. Sobran comentarios en español :P
+6. Espacios en blanco + faltan espacios entre argumentos de funciones, etc..
